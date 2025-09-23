@@ -28,16 +28,18 @@ public class Launcher {
 
         List<AccountCustomerAssignment> assignments = new ArrayList<>();
         assignments.add(accountCustomerAssignment);
-        assignments.add(accountCustomerAssignment);
-        assignments.add(accountCustomerAssignment);
-        assignments.add(accountCustomerAssignment);
+
 
         //we will see that in a specific lecture
         assignments.stream()
                 .map(a -> a.getCustomer().getName())
                 .toList();
 
-        //new content
+        //1. assignment creation and addition (new customer + investment account)
+        //2. buy stocks (to be created) from an investment account
+        //3. figure out if a service creation is possible to gather all the actions present in the main method.
+
+
 
 
 
