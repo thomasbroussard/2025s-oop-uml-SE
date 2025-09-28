@@ -1,47 +1,47 @@
 package fr.epita.bank.launcher;
 
-import fr.epita.bank.datamodel.Account;
-import fr.epita.bank.datamodel.AccountCustomerAssignment;
-import fr.epita.bank.datamodel.Customer;
-import fr.epita.bank.datamodel.SavingsAccount;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
+
+import fr.epita.bank.datamodel.*;
+import fr.epita.bank.service.BankService;
+
 
 public class Launcher {
 
 
     public static void main(String[] args) {
-        Customer customer = new Customer("test", "Paris");
-        // customer.setName("test");
-        // customer.setAddress("Paris");
 
-        SavingsAccount savingsAccount = new SavingsAccount("test", 0.035, 400.0);
-
-        AccountCustomerAssignment accountCustomerAssignment = new AccountCustomerAssignment();
-        accountCustomerAssignment.setCustomer(customer);
-        accountCustomerAssignment.setAccount(savingsAccount);
-
-        AccountCustomerAssignment[] customerAssignments = new AccountCustomerAssignment[2];
+        //3. figure out if a service creation is possible to gather all the actions present in the main method.
+        // --------------------------
+        // Yes, the service is created. Here, we just created fr.epita.bank.service.BankService
+        // to handle all actions from the main method in a centralized and reusable way.
+        // --------------------------
 
         List<AccountCustomerAssignment> assignments = new ArrayList<>();
-        assignments.add(accountCustomerAssignment);
+        BankService bankService = new BankService(assignments);
 
+        bankService.createSavingsAssignment("test", "Paris", "test", 0.035, 400.0);
 
-        //we will see that in a specific lecture
-        assignments.stream()
-                .map(a -> a.getCustomer().getName())
-                .toList();
+          // --------------------------------------------------
+          // 1. Assignment creation and addition
+          // (new customer + investment account)
+          // --------------------------------------------------
+        bankService.createInvestmentAssignment("Naveed", "Epita", "INV-001", 10.0);
 
-        //1. assignment creation and addition (new customer + investment account)
-        //2. buy stocks (to be created) from an investment account
-        //3. figure out if a service creation is possible to gather all the actions present in the main method.
+        // --------------------------------------------------
+        // 2. buy stocks (to be created) from an investment account
+        // --------------------------------------------------
+        InvestmentAccount invAcc = bankService.getFirstInvestmentAccount();
+        if(invAcc != null){
+            Stock apple = new Stock("AAPL", "2");
+            Stock google = new Stock("GOOGL", "2800");
 
+            bankService.buyStock(invAcc, apple, 1, 2.0);
+            bankService.buyStock(invAcc, google, 2, 15.0);
+        }
 
-
-
+        bankService.displayAssignments();
 
     }
 
