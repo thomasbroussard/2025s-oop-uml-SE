@@ -6,16 +6,20 @@ public class InvestmentAccount extends Account {
         super(accountNumber, balance);
     }
 
-    public void buyStock(String stockName, Double amount) {
+    public void buyStock(Stock stock, int quantity, double commission) {
+        double unitPrice = Double.parseDouble(stock.getCurrentPrice());
+        double totalCost = (unitPrice * quantity) + commission;
+
         Double currentBalance = getBalance();
 
-        if (currentBalance < amount) {
+        if (currentBalance < totalCost) {
             System.out.println("Insufficient balance to buy stocks!");
             return;
         }
 
-        System.out.println("Buying " + amount + " of " + stockName + " from account " + getNumber());
-        setBalance(currentBalance - amount);
+
+        System.out.println("Buying " + totalCost + " of " + stock.getName() + " from account " + getNumber());
+        setBalance(currentBalance - totalCost);
     }
 
 }

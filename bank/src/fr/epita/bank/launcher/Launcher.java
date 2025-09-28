@@ -34,8 +34,11 @@ public class Launcher {
         // --------------------------------------------------
         InvestmentAccount invAcc = bankService.getFirstInvestmentAccount();
         if(invAcc != null){
-            bankService.buyStock(invAcc, "AAPL", 5.0);
-            bankService.buyStock(invAcc, "GOOGL", 2.0);
+            Stock apple = new Stock("AAPL", "2");
+            Stock google = new Stock("GOOGL", "2800");
+
+            bankService.buyStock(invAcc, apple, 1, 2.0);
+            bankService.buyStock(invAcc, google, 2, 15.0);
         }
 
         bankService.displayAssignments();

@@ -31,8 +31,8 @@ public class BankService {
         createAssignment(customerName, customerAddress, account);
     }
 
-    public void buyStock(InvestmentAccount account, String stockName, Double amount) {
-        account.buyStock(stockName, amount);
+    public void buyStock(InvestmentAccount account, Stock stock, int quantity, double commission) {
+        account.buyStock(stock, quantity, commission);
     }
 
     public InvestmentAccount getFirstInvestmentAccount() {
