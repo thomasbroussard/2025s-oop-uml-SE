@@ -1,4 +1,5 @@
 package fr.epita.bank.datamodel;
+import fr.epita.bank.datamodel.Account;
 
 public class AccountCustomerAssignment {
     private Customer customer;

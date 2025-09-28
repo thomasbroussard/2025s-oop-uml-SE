@@ -1,4 +1,5 @@
 package fr.epita.bank.datamodel;
+import fr.epita.bank.datamodel.Account;
 
 public class SavingsAccount extends Account {
     Double interestRate;
@@ -7,6 +8,4 @@ public class SavingsAccount extends Account {
         super(accountNumber, balance);
         this.interestRate = interestRate;
     }
-
-
 }

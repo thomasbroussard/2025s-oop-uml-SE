@@ -1,45 +1,41 @@
 package fr.epita.bank.launcher;
 
-import fr.epita.bank.datamodel.Account;
-import fr.epita.bank.datamodel.AccountCustomerAssignment;
-import fr.epita.bank.datamodel.Customer;
-import fr.epita.bank.datamodel.SavingsAccount;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
+
+import fr.epita.bank.datamodel.*;
+import fr.epita.bank.services.*;
+
 
 public class Launcher {
 
 
     public static void main(String[] args) {
-        Customer customer = new Customer("test", "Paris");
-        // customer.setName("test");
-        // customer.setAddress("Paris");
 
-        SavingsAccount savingsAccount = new SavingsAccount("test", 0.035, 400.0);
-
-        AccountCustomerAssignment accountCustomerAssignment = new AccountCustomerAssignment();
-        accountCustomerAssignment.setCustomer(customer);
-        accountCustomerAssignment.setAccount(savingsAccount);
-
-        AccountCustomerAssignment[] customerAssignments = new AccountCustomerAssignment[2];
+        // Service layer implementation complete
+        // Q: Is service creation possible to gather main method actions?
+        // A: Yes - ServiceBank class now centrally manages all banking operations
 
         List<AccountCustomerAssignment> assignments = new ArrayList<>();
-        assignments.add(accountCustomerAssignment);
-        assignments.add(accountCustomerAssignment);
-        assignments.add(accountCustomerAssignment);
-        assignments.add(accountCustomerAssignment);
+        ServiceBank ServiceBank = new ServiceBank(assignments);
 
-        //we will see that in a specific lecture
-        assignments.stream()
-                .map(a -> a.getCustomer().getName())
-                .toList();
+        ServiceBank.createSavingsAssignment("Test User", "Paris", "SAVACC-001", 0.035, 400.0);
 
-        //new content
+        // --------------------------------------------------
+        // Step 1: Create new customer with investment account
+        // --------------------------------------------------
+        ServiceBank.createInvestmentAssignment("Naveed Riaz", "Epita, Paris", "INVACC-001", 10.0);
 
+        // --------------------------------------------------
+        // Step 2: Purchase stocks via investment account
+        // --------------------------------------------------
+        InvestmentAccount invAcc = ServiceBank.getFirstInvestmentAccount();
+        if(invAcc != null){
+            ServiceBank.buyStock(invAcc, "TESLA", 5.0);
+            ServiceBank.buyStock(invAcc, "Microsoft", 2.0);
+        }
 
+        ServiceBank.displayAssignments();
 
     }
 

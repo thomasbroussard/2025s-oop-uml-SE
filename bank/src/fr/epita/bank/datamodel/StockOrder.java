@@ -1,11 +1,11 @@
 package fr.epita.bank.datamodel;
 
-public class StockOrder {
-    Double unitPrice;
-    Integer quantity;
-    Double commission;
+public class StockOrder
+{
+    double unit_price;
+    double quantity;
+    double commission;
 
-    InvestmentAccount investmentAccount;
+    fr.epita.bank.datamodel.InvestmentAccount investmentAccount;
     Stock stock;
-
 }

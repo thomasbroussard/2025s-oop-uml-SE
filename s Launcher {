@@ -1,0 +1,275 @@
+[1mdiff --git a/bank/src/fr/epita/bank/datamodel/Account.java b/bank/src/fr/epita/bank/datamodel/Account.java[m
+[1mindex cef4c6b..29cccbc 100644[m
+[1m--- a/bank/src/fr/epita/bank/datamodel/Account.java[m
+[1m+++ b/bank/src/fr/epita/bank/datamodel/Account.java[m
+[36m@@ -1,13 +1,28 @@[m
+ package fr.epita.bank.datamodel;[m
+ [m
+ public class Account {[m
+[31m-    String number;[m
+[31m-    Double balance;[m
+[32m+[m[32m    private String number;[m
+[32m+[m[32m    private Double balance;[m
+ [m
+     protected Account(String number, double balance) {[m
+         this.number = number;[m
+         this.balance = balance;[m
+     }[m
+ [m
+[32m+[m[32m    public Double getBalance() {[m
+[32m+[m[32m        return balance;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void setBalance(Double balance) {[m
+[32m+[m[32m        this.balance = balance;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public String getNumber() {[m
+[32m+[m[32m        return number;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void setNumber(String number) {[m
+[32m+[m[32m        this.number = number;[m
+[32m+[m[32m    }[m
+ [m
+ }[m
+[1mdiff --git a/bank/src/fr/epita/bank/datamodel/AccountCustomerAssignment.java b/bank/src/fr/epita/bank/datamodel/AccountCustomerAssignment.java[m
+[1mindex 46ef2a9..6e37eb0 100644[m
+[1m--- a/bank/src/fr/epita/bank/datamodel/AccountCustomerAssignment.java[m
+[1m+++ b/bank/src/fr/epita/bank/datamodel/AccountCustomerAssignment.java[m
+[36m@@ -1,4 +1,5 @@[m
+ package fr.epita.bank.datamodel;[m
+[32m+[m[32mimport fr.epita.bank.datamodel.Account;[m
+ [m
+ public class AccountCustomerAssignment {[m
+     private Customer customer;[m
+[36m@@ -19,4 +20,4 @@[m [mpublic class AccountCustomerAssignment {[m
+     public void setAccount(Account account) {[m
+         this.account = account;[m
+     }[m
+[31m-}[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
+[1mdiff --git a/bank/src/fr/epita/bank/datamodel/Customer.java b/bank/src/fr/epita/bank/datamodel/Customer.java[m
+[1mindex cbb7e7f..aa908ba 100644[m
+[1m--- a/bank/src/fr/epita/bank/datamodel/Customer.java[m
+[1m+++ b/bank/src/fr/epita/bank/datamodel/Customer.java[m
+[36m@@ -1,7 +1,6 @@[m
+ package fr.epita.bank.datamodel;[m
+ [m
+ public class Customer {[m
+[31m-[m
+     private String name;[m
+     private String id;[m
+     private String address;[m
+[1mdiff --git a/bank/src/fr/epita/bank/datamodel/InvestmentAccount.java b/bank/src/fr/epita/bank/datamodel/InvestmentAccount.java[m
+[1mindex 20bc209..5a2765a 100644[m
+[1m--- a/bank/src/fr/epita/bank/datamodel/InvestmentAccount.java[m
+[1m+++ b/bank/src/fr/epita/bank/datamodel/InvestmentAccount.java[m
+[36m@@ -1,6 +1,20 @@[m
+ package fr.epita.bank.datamodel;[m
+[32m+[m[32mimport fr.epita.bank.datamodel.Account;[m
+ [m
+[31m-public class InvestmentAccount extends Account{[m
+[32m+[m[32mpublic class InvestmentAccount extends Account {[m
+[32m+[m[32m    public InvestmentAccount(String accountNumber, Double balance) {[m
+[32m+[m[32m        super(accountNumber, balance);[m
+[32m+[m[32m    }[m
+ [m
+[32m+[m[32m    public void buyStock(String stockName, Double amount) {[m
+[32m+[m[32m        Double currentBalance = getBalance();[m
+ [m
+[32m+[m[32m        if (currentBalance < amount) {[m
+[32m+[m[32m            System.out.println("Insufficient balance to buy stocks!");[m
+[32m+[m[32m            return;[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        System.out.println("Buying " + amount + " of " + stockName + " from account " + getNumber());[m
+[32m+[m[32m        setBalance(currentBalance - amount);[m
+[32m+[m[32m    }[m
+ }[m
+[1mdiff --git a/bank/src/fr/epita/bank/datamodel/SavingsAccount.java b/bank/src/fr/epita/bank/datamodel/SavingsAccount.java[m
+[1mindex 480c935..b347805 100644[m
+[1m--- a/bank/src/fr/epita/bank/datamodel/SavingsAccount.java[m
+[1m+++ b/bank/src/fr/epita/bank/datamodel/SavingsAccount.java[m
+[36m@@ -1,4 +1,5 @@[m
+ package fr.epita.bank.datamodel;[m
+[32m+[m[32mimport fr.epita.bank.datamodel.Account;[m
+ [m
+ public class SavingsAccount extends Account {[m
+     Double interestRate;[m
+[36m@@ -7,6 +8,4 @@[m [mpublic class SavingsAccount extends Account {[m
+         super(accountNumber, balance);[m
+         this.interestRate = interestRate;[m
+     }[m
+[31m-[m
+[31m-[m
+ }[m
+[1mdiff --git a/bank/src/fr/epita/bank/datamodel/StockOrder.java b/bank/src/fr/epita/bank/datamodel/StockOrder.java[m
+[1mindex d38d0a9..a62b022 100644[m
+[1m--- a/bank/src/fr/epita/bank/datamodel/StockOrder.java[m
+[1m+++ b/bank/src/fr/epita/bank/datamodel/StockOrder.java[m
+[36m@@ -1,11 +1,11 @@[m
+ package fr.epita.bank.datamodel;[m
+ [m
+[31m-public class StockOrder {[m
+[31m-    Double unitPrice;[m
+[31m-    Integer quantity;[m
+[31m-    Double commission;[m
+[32m+[m[32mpublic class StockOrder[m
+[32m+[m[32m{[m
+[32m+[m[32m    double unit_price;[m
+[32m+[m[32m    double quantity;[m
+[32m+[m[32m    double commission;[m
+ [m
+[31m-    InvestmentAccount investmentAccount;[m
+[32m+[m[32m    fr.epita.bank.datamodel.InvestmentAccount investmentAccount;[m
+     Stock stock;[m
+[31m-[m
+ }[m
+[1mdiff --git a/bank/src/fr/epita/bank/launcher/Launcher.java b/bank/src/fr/epita/bank/launcher/Launcher.java[m
+[1mindex 04848d6..3820a89 100644[m
+[1m--- a/bank/src/fr/epita/bank/launcher/Launcher.java[m
+[1m+++ b/bank/src/fr/epita/bank/launcher/Launcher.java[m
+[36m@@ -1,47 +1,43 @@[m
+ package fr.epita.bank.launcher;[m
+ [m
+[31m-import fr.epita.bank.datamodel.Account;[m
+[31m-import fr.epita.bank.datamodel.AccountCustomerAssignment;[m
+[31m-import fr.epita.bank.datamodel.Customer;[m
+[31m-import fr.epita.bank.datamodel.SavingsAccount;[m
+[31m-[m
+ import java.util.ArrayList;[m
+[31m-import java.util.LinkedList;[m
+ import java.util.List;[m
+[31m-import java.util.Stack;[m
+ [m
+[31m-public class Launcher {[m
+[32m+[m[32mimport fr.epita.bank.datamodel.*;[m
+[32m+[m[32mimport fr.epita.bank.services.*;[m
+ [m
+ [m
+[31m-    public static void main(String[] args) {[m
+[31m-        Customer customer = new Customer("test", "Paris");[m
+[31m-        // customer.setName("test");[m
+[31m-        // customer.setAddress("Paris");[m
+[32m+[m[32mpublic class Launcher {[m
+ [m
+[31m-        SavingsAccount savingsAccount = new SavingsAccount("test", 0.035, 400.0);[m
+ [m
+[31m-        AccountCustomerAssignment accountCustomerAssignment = new AccountCustomerAssignment();[m
+[31m-        accountCustomerAssignment.setCustomer(customer);[m
+[31m-        accountCustomerAssignment.setAccount(savingsAccount);[m
+[32m+[m[32m    public static void main(String[] args) {[m
+ [m
+[31m-        AccountCustomerAssignment[] customerAssignments = new AccountCustomerAssignment[2];[m
+[32m+[m[32m        // Service layer implementation complete[m
+[32m+[m[32m        // Q: Is service creation possible to gather main method actions?[m
+[32m+[m[32m        // A: Yes - ServiceBank class now centrally manages all banking operations[m
+ [m
+         List<AccountCustomerAssignment> assignments = new ArrayList<>();[m
+[31m-        assignments.add(accountCustomerAssignment);[m
+[31m-        assignments.add(accountCustomerAssignment);[m
+[31m-        assignments.add(accountCustomerAssignment);[m
+[31m-        assignments.add(accountCustomerAssignment);[m
+[32m+[m[32m        ServiceBank ServiceBank = new ServiceBank(assignments);[m
+ [m
+[31m-        //we will see that in a specific lecture[m
+[31m-        assignments.stream()[m
+[31m-                .map(a -> a.getCustomer().getName())[m
+[31m-                .toList();[m
+[32m+[m[32m        ServiceBank.createSavingsAssignment("Test User", "Paris", "SAVACC-001", 0.035, 400.0);[m
+ [m
+[31m-        //new content[m
+[32m+[m[32m        // --------------------------------------------------[m
+[32m+[m[32m        // Step 1: Create new customer with investment account[m
+[32m+[m[32m        // --------------------------------------------------[m
+[32m+[m[32m        ServiceBank.createInvestmentAssignment("Naveed Riaz", "Epita, Paris", "INVACC-001", 10.0);[m
+ [m
+[32m+[m[32m        // --------------------------------------------------[m
+[32m+[m[32m        // Step 2: Purchase stocks via investment account[m
+[32m+[m[32m        // --------------------------------------------------[m
+[32m+[m[32m        InvestmentAccount invAcc = ServiceBank.getFirstInvestmentAccount();[m
+[32m+[m[32m        if(invAcc != null){[m
+[32m+[m[32m            ServiceBank.buyStock(invAcc, "TESLA", 5.0);[m
+[32m+[m[32m            ServiceBank.buyStock(invAcc, "Microsoft", 2.0);[m
+[32m+[m[32m        }[m
+ [m
+[32m+[m[32m        ServiceBank.displayAssignments();[m
+ [m
+     }[m
+ [m
+ [m
+[31m-}[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
+[1mdiff --git a/bank/src/fr/epita/bank/services/ServiceBank.java b/bank/src/fr/epita/bank/services/ServiceBank.java[m
+[1mindex 17ac316..95d7db1 100644[m
+[1m--- a/bank/src/fr/epita/bank/services/ServiceBank.java[m
+[1m+++ b/bank/src/fr/epita/bank/services/ServiceBank.java[m
+[36m@@ -1,4 +1,63 @@[m
+ package fr.epita.bank.services;[m
+ [m
+[32m+[m[32mimport fr.epita.bank.datamodel.Account;[m
+[32m+[m[32mimport fr.epita.bank.datamodel.Customer;[m
+[32m+[m[32mimport fr.epita.bank.datamodel.InvestmentAccount;[m
+[32m+[m[32mimport fr.epita.bank.datamodel.SavingsAccount;[m
+[32m+[m[32mimport fr.epita.bank.datamodel.AccountCustomerAssignment;[m
+[32m+[m
+[32m+[m[32mimport java.util.List;[m
+[32m+[m
+ public class ServiceBank {[m
+[31m-}[m
+[32m+[m[32m    private List<AccountCustomerAssignment> assignments;[m
+[32m+[m
+[32m+[m[32m    public ServiceBank(List<AccountCustomerAssignment> assignments) {[m
+[32m+[m[32m        this.assignments = assignments;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private void createAssignment(String customerName, String customerAddress, Account account) {[m
+[32m+[m[32m        Customer customer = new Customer(customerName, customerAddress);[m
+[32m+[m
+[32m+[m[32m        AccountCustomerAssignment assignment = new AccountCustomerAssignment();[m
+[32m+[m[32m        assignment.setCustomer(customer);[m
+[32m+[m[32m        assignment.setAccount(account);[m
+[32m+[m
+[32m+[m[32m        assignments.add(assignment);[m
+[32m+[m
+[32m+[m[32m        System.out.println("Created assignment for " + customerName + " (" + account.getClass().getSimpleName() + ")");[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void createSavingsAssignment(String customerName, String customerAddress, String accountNumber, Double interestRate, Double balance) {[m
+[32m+[m[32m        SavingsAccount account = new SavingsAccount(accountNumber, interestRate, balance);[m
+[32m+[m[32m        createAssignment(customerName, customerAddress, account);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void createInvestmentAssignment(String customerName, String customerAddress, String accountNumber, Double initialBalance) {[m
+[32m+[m[32m        InvestmentAccount account = new InvestmentAccount(accountNumber, initialBalance);[m
+[32m+[m[32m        createAssignment(customerName, customerAddress, account);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public void buyStock(InvestmentAccount account, String stockName, Double amount) {[m
+[32m+[m[32m        account.buyStock(stockName, amount);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public InvestmentAccount getFirstInvestmentAccount() {[m
+[32m+[m[32m        for (AccountCustomerAssignment acc : assignments) {[m
+[32m+[m[32m            if (acc.getAccount() instanceof InvestmentAccount) {[m
+[32m+[m[32m                return (InvestmentAccount) acc.getAccount();[m
+[32m+[m[32m            }[m
+[32m+[m[32m        }[m
+[32m+[m[32m        return null;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    // Just in case to see, the assignments[m
+[32m+[m[32m    public void displayAssignments() {[m
+[32m+[m[32m        List<String> customerNames = assignments.stream()[m
+[32m+[m[32m                .map(a -> a.getCustomer().getName())[m
+[32m+[m[32m                .toList();[m
+[32m+[m
+[32m+[m[32m        customerNames.forEach(System.out::println);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
