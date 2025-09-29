@@ -4,6 +4,11 @@ public class AccountCustomerAssignment {
     private Customer customer;
     private Account account;
 
+    public AccountCustomerAssignment(Customer customer, Account account) {
+        this.customer = customer;
+        this.account = account;
+    }
+
     public Customer getCustomer() {
         return customer;
     }
