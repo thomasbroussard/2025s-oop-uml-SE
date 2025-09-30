@@ -1,11 +1,14 @@
 package fr.epita.biostat.launcher;
 
+import fr.epita.biostat.datamodel.BioStatEntry;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Launcher {
@@ -15,11 +18,27 @@ public class Launcher {
         Path path = Paths.get("biostat/biostat.csv");
         Scanner sc = new Scanner(path);
         List<BioStatEntry> entries = new ArrayList<>();
+        sc.nextLine();
         while (sc.hasNextLine()) {
-            System.out.println(sc.nextLine());
+            String line = sc.nextLine();
+            line = line.trim().replace("\"", "");
+            String[] cells = line.split(",");
+            BioStatEntry entry = new BioStatEntry(
+                    cells[0].trim(),
+                    cells[1].trim(),
+                    Integer.parseInt(cells[2].trim()),
+                    Integer.parseInt(cells[3].trim()),
+                    Integer.parseInt(cells[4].trim())
+            );
+            entries.add(entry);
         }
         System.out.println(entries.size());
-
+        double averageAge = 0.0;
+        for (BioStatEntry entry : entries) {
+            averageAge += entry.getAge();
+        }
+        averageAge /= entries.size();
+        System.out.println("Average age: " + averageAge);
         sc.close();
 
     }
