@@ -4,6 +4,7 @@ import fr.epita.biostat.datamodel.BioStatEntry;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,6 +33,23 @@ public class Launcher {
             );
             entries.add(entry);
         }
+
+        File newFile = new File("biostat/biostat.out.csv");
+        PrintWriter writer = new PrintWriter(newFile);
+        String header = """
+                "Name",     "Sex", "Age", "Height (in)", "Weight (lbs)" """;
+        writer.println(header);
+        for (BioStatEntry entry : entries) {
+            String line = entry.getName() + ", "+
+                    entry.getSex() + ", "+
+                    entry.getAge() + ", " +
+                    entry.getHeight() + ", " +
+                    entry.getWeight();
+            writer.println(line);
+        }
+        writer.close();
+
+
         System.out.println(entries.size());
         double averageAge = 0.0;
         for (BioStatEntry entry : entries) {
