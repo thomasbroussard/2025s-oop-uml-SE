@@ -1,53 +1,20 @@
 package fr.epita.biostat.launcher;
 
 import fr.epita.biostat.datamodel.BioStatEntry;
-
-import java.io.File;
+import fr.epita.biostat.service.CSVService;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Launcher {
 
     public static void main(String[] args) throws IOException {
         //scannerPlusSystemInDemo();
-        Path path = Paths.get("biostat/biostat.csv");
-        Scanner sc = new Scanner(path);
-        List<BioStatEntry> entries = new ArrayList<>();
-        sc.nextLine();
-        while (sc.hasNextLine()) {
-            String line = sc.nextLine();
-            line = line.trim().replace("\"", "");
-            String[] cells = line.split(",");
-            BioStatEntry entry = new BioStatEntry(
-                    cells[0].trim(),
-                    cells[1].trim(),
-                    Integer.parseInt(cells[2].trim()),
-                    Integer.parseInt(cells[3].trim()),
-                    Integer.parseInt(cells[4].trim())
-            );
-            entries.add(entry);
-        }
+        String filePath = "biostat/biostat.csv";
+        List<BioStatEntry> entries = CSVService.readFromFile(filePath);
 
-        File newFile = new File("biostat/biostat.out.csv");
-        PrintWriter writer = new PrintWriter(newFile);
-        String header = """
-                "Name",     "Sex", "Age", "Height (in)", "Weight (lbs)" """;
-        writer.println(header);
-        for (BioStatEntry entry : entries) {
-            String line = entry.getName() + ", "+
-                    entry.getSex() + ", "+
-                    entry.getAge() + ", " +
-                    entry.getHeight() + ", " +
-                    entry.getWeight();
-            writer.println(line);
-        }
-        writer.close();
+        String pathname = "biostat/biostat.out.csv";
+        CSVService.writeToFile(pathname, entries);
 
 
         System.out.println(entries.size());
@@ -57,9 +24,29 @@ public class Launcher {
         }
         averageAge /= entries.size();
         System.out.println("Average age: " + averageAge);
-        sc.close();
+
+        Map<String,Integer> map = new LinkedHashMap<>();
+        for (BioStatEntry entry : entries) {
+            Integer count = map.getOrDefault(entry.getSex(), 0);
+            map.put(entry.getSex(), count+1);
+        }
+        Map<Integer,Integer> countByAge = new LinkedHashMap<>();
+        for (BioStatEntry entry : entries) {
+            Integer count = map.getOrDefault(entry.getAge(), 0);
+            countByAge.put(entry.getAge(), count+1);
+        }
+        System.out.println(countByAge);
+
+        Map<String, Long> countBySex = entries
+                .stream()
+                .collect(Collectors.groupingBy(BioStatEntry::getSex, Collectors.counting()));
+        System.out.println(countBySex);
+        System.out.println(map);
+
 
     }
+
+
 
     private static void scannerPlusSystemInDemo() {
         System.out.println("Hello World!");
