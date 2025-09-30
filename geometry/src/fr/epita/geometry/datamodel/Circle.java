@@ -1,6 +1,6 @@
 package fr.epita.geometry.datamodel;
 
-public class Circle {
+public class Circle implements IShape {
 
     private Double radius;
 
@@ -16,12 +16,16 @@ public class Circle {
         this.radius = radius;
     }
 
-    public double getArea(){
+    public Double getArea(){
        return Math.pow(this.radius, 2) * Math.PI;
     }
 
-    public double getPerimeter() {
+    public Double getPerimeter() {
         return  2 * Math.PI * radius;
+    }
+
+    public void saveToDB(){
+
     }
 
 }

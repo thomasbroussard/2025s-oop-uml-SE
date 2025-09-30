@@ -1,6 +1,6 @@
 package fr.epita.geometry.datamodel;
 
-public class Triangle {
+public class Triangle implements IShape {
     private Double base, sideB, sideC;
     private Double height;
 
@@ -46,5 +46,10 @@ public class Triangle {
 
     public Double getArea() {
         return base * this.height / 2;
+    }
+
+    @Override
+    public Double getPerimeter() {
+        return sideB + sideC + base;
     }
 }
