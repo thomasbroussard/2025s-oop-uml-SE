@@ -32,7 +32,7 @@ public class Launcher {
         }
         Map<Integer,Integer> countByAge = new LinkedHashMap<>();
         for (BioStatEntry entry : entries) {
-            Integer count = map.getOrDefault(entry.getAge(), 0);
+            Integer count = countByAge.computeIfAbsent(entry.getAge(), e -> 0);
             countByAge.put(entry.getAge(), count+1);
         }
         System.out.println(countByAge);
