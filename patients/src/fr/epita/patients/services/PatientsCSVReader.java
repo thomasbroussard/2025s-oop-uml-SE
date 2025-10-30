@@ -5,6 +5,7 @@ import fr.epita.patients.datamodel.Patient;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class PatientsCSVReader {
@@ -43,14 +44,16 @@ public class PatientsCSVReader {
     private static Patient getPatient(String line) {
         String[] parts = line.split(";");
         String[] dateParts = parts[6].split("/");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Patient patient = new Patient(
                 parts[0].replace("\"",""),
                 parts[1],
                 parts[2],
                 Integer.parseInt(parts[5]),
-                LocalDate.of(Integer.parseInt(dateParts[2]),
+                /*LocalDate.of(Integer.parseInt(dateParts[2]),
                         Integer.parseInt(dateParts[1]),
-                        Integer.parseInt(dateParts[0]))
+                        Integer.parseInt(dateParts[0]))*/
+                LocalDate.parse(parts[6], formatter)
         );
         patient.setPatTel(parts[3].replace("\"",""));
         patient.setPatAddress(parts[4]);
