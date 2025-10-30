@@ -5,9 +5,7 @@ import fr.epita.patients.datamodel.Patient;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class PatientsCSVReader {
 
@@ -30,11 +28,23 @@ public class PatientsCSVReader {
         return patients;
     }
 
+    public Map<String,String> extractSocialSecurityNumber(String patNumHC) {
+       Map<String,String > result = new HashMap<>();
+       if (patNumHC == null || patNumHC.isEmpty()) {
+           return result;
+       }
+       result.put("gender",patNumHC.substring(0,1));
+       result.put("birthYear",patNumHC.substring(1,3));
+       result.put("birthMonth",patNumHC.substring(3,5));
+       result.put("birthLocation",patNumHC.substring(5,7));
+       return result;
+    }
+
     private static Patient getPatient(String line) {
         String[] parts = line.split(";");
         String[] dateParts = parts[6].split("/");
         Patient patient = new Patient(
-                parts[0],
+                parts[0].replace("\"",""),
                 parts[1],
                 parts[2],
                 Integer.parseInt(parts[5]),
@@ -42,7 +52,7 @@ public class PatientsCSVReader {
                         Integer.parseInt(dateParts[1]),
                         Integer.parseInt(dateParts[0]))
         );
-        patient.setPatTel(parts[3]);
+        patient.setPatTel(parts[3].replace("\"",""));
         patient.setPatAddress(parts[4]);
         return patient;
     }
