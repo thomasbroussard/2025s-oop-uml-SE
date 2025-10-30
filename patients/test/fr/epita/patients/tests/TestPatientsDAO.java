@@ -1,6 +1,10 @@
 package fr.epita.patients.tests;
 
+import fr.epita.patients.datamodel.Patient;
+import fr.epita.patients.services.PatientsDAO;
+
 import java.sql.*;
+import java.time.LocalDate;
 
 public class TestPatientsDAO {
 
@@ -9,41 +13,18 @@ public class TestPatientsDAO {
                 "user",
                 "pwd");
 
-        String createTable = """
-                CREATE TABLE patients (
-                    hcNum VARCHAR(255), 
-                    firstName VARCHAR(255), 
-                    address VARCHAR(255), 
-                    insurance INT)
-                """;
-        connection.prepareStatement(createTable).execute();
-        String insertStatement = """
-            INSERT INTO patients(hcNum,
-                    firstName, 
-                    address, 
-                    insurance) 
-            VALUES(?,?,?,?)
-        """;
-        PreparedStatement preparedStatement = connection.prepareStatement(insertStatement);
-        preparedStatement.setString(1, "2758965423102");
-        preparedStatement.setString(2, "test");
-        preparedStatement.setString(3, "Paris");
-        preparedStatement.setInt(4, 3);
-        preparedStatement.execute();
+        PatientsDAO patientsDAO = new PatientsDAO();
 
+
+        Patient patient = new Patient("2758965423102", "testLN","test", 1, LocalDate.now() );
+
+        patientsDAO.create(patient);
         displayPatients(connection);
 
-        String updateStatement = """
-                UPDATE PATIENTS set firstName = 'test2'
-                """;
-
-        connection.prepareStatement(updateStatement).execute();
+        patientsDAO.update(patient);
         displayPatients(connection);
-        String deleteStatement = """
-                DELETE FROM PATIENTS where hcNum = '2758965423102'
-                """;
 
-        connection.prepareStatement(deleteStatement).execute();
+        patientsDAO.delete(patient);
         displayPatients(connection);
 
 
