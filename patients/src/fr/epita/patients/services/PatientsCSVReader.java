@@ -26,7 +26,9 @@ public class PatientsCSVReader {
             Patient patient = getPatient(line);
             patients.add(patient);
         }
+        scanner.close();
         return patients;
+
     }
 
     public Map<String,String> extractSocialSecurityNumber(String patNumHC) {
