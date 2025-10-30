@@ -1,9 +1,6 @@
 package fr.epita.patients.tests;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class TestPatientsDAO {
 
@@ -25,12 +22,28 @@ public class TestPatientsDAO {
                     firstName, 
                     address, 
                     insurance) 
-            VALUES('2758965423102','test','Paris', 1)
+            VALUES(?,?,?,?)
         """;
+        PreparedStatement preparedStatement = connection.prepareStatement(insertStatement);
+        preparedStatement.setString(1, "2758965423102");
+        preparedStatement.setString(2, "test");
+        preparedStatement.setString(3, "Paris");
+        preparedStatement.setInt(4, 3);
+        preparedStatement.execute();
 
+        displayPatients(connection);
 
-        connection.prepareStatement(insertStatement).execute();
+        String updateStatement = """
+                UPDATE PATIENTS set firstName = 'test2'
+                """;
 
+        connection.prepareStatement(updateStatement).execute();
+        displayPatients(connection);
+        String deleteStatement = """
+                DELETE FROM PATIENTS where hcNum = '2758965423102'
+                """;
+
+        connection.prepareStatement(deleteStatement).execute();
         displayPatients(connection);
 
 
@@ -45,11 +58,16 @@ public class TestPatientsDAO {
                from patients
                 """;
         ResultSet resultSet = connection.prepareStatement(selectStatement).executeQuery();
+        int count = 0;
         while (resultSet.next()) {
+            count++;
             System.out.println(resultSet.getString("hcNum"));
             System.out.println(resultSet.getString("firstName"));
             System.out.println(resultSet.getString("address"));
             System.out.println(resultSet.getString("insurance"));
+        }
+        if (count == 0){
+            System.out.println("No patients found");
         }
     }
 }
